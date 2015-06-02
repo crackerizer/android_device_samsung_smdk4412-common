@@ -31,7 +31,8 @@ PRODUCT_COPY_FILES := \
     $(COMMON_PATH)/rootdir/init.smdk4x12.usb.rc:root/init.smdk4x12.usb.rc \
     $(COMMON_PATH)/rootdir/init.trace.rc:root/init.trace.rc \
     $(COMMON_PATH)/rootdir/ueventd.smdk4x12.rc:root/ueventd.smdk4x12.rc \
-    $(COMMON_PATH)/rootdir/ueventd.smdk4x12.rc:recovery/root/ueventd.smdk4x12.rc
+    $(COMMON_PATH)/rootdir/ueventd.smdk4x12.rc:recovery/root/ueventd.smdk4x12.rc \
+    $(COMMON_PATH)/rootdir/twrp.fstab:recovery/root/etc/twrp.fstab
 
 # Audio
 PRODUCT_COPY_FILES += \
@@ -79,26 +80,6 @@ PRODUCT_PACKAGES := \
     tinymix \
     sec_keyboard
 
-ifneq ($(TARGET_HAS_CAM_FLASH) ,false)
-PRODUCT_PACKAGES += \
-    Torch
-endif
-
-# Wifi    
-PRODUCT_PACKAGES += \
-    hostapd \
-    hostapd_default.conf \
-    libnetcmdiface \
-    libwpa_client \
-    macloader \
-    dhcpcd.conf \
-    wpa_supplicant \
-    wpa_supplicant.conf
-
-# Charger
-PRODUCT_PACKAGES += \
-    charger_res_images
-
 # MFC API
 PRODUCT_PACKAGES += \
     libsecmfcdecapi \
@@ -123,7 +104,7 @@ PRODUCT_COPY_FILES += \
     frameworks/av/media/libstagefright/data/media_codecs_google_telephony.xml:system/etc/media_codecs_google_telephony.xml \
     frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:system/etc/media_codecs_google_video.xml \
     frameworks/av/media/libstagefright/data/media_codecs_ffmpeg.xml:system/etc/media_codecs_ffmpeg.xml
-    
+
 # Filesystem management tools
 PRODUCT_PACKAGES += \
     static_busybox \
@@ -141,6 +122,18 @@ PRODUCT_PACKAGES += \
     PhaseBeam \
     VisualizationWallpapers \
     librs_jni
+
+# Wifi
+PRODUCT_PACKAGES += \
+    libwpa_client \
+    hostapd \
+    dhcpcd.conf \
+    wpa_supplicant \
+    wpa_supplicant.conf
+
+# Charger
+PRODUCT_PACKAGES += \
+    charger_res_images
 
 # These are the hardware-specific features
 PRODUCT_COPY_FILES += \
@@ -185,6 +178,10 @@ PRODUCT_TAGS += dalvik.gc.type-precise
 # Set default USB interface
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     persist.sys.usb.config=mtp
+
+# USB-OTG
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.sys.isUsbOtgEnabled=true
 
 $(call inherit-product, frameworks/native/build/phone-xhdpi-1024-dalvik-heap.mk)
 
